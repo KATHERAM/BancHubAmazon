@@ -47,47 +47,36 @@ namespace BancHubAmzon.Controllers
         [HttpPost]
         public ActionResult GetSetOrderReference(string amazonOrderReferenceId, string amount, string addressConsentToken = "")
         {
-
-            SetOrderReferenceDetailsRequest setRequestParameters = new SetOrderReferenceDetailsRequest();
-            setRequestParameters.WithAmazonOrderReferenceId(amazonOrderReferenceId)
-                .WithAmount(decimal.Parse(amount))
-                .WithCurrencyCode(Regions.currencyCode.USD)
-                .WithSellerNote("Note");
-
-            OrderReferenceDetailsResponse setResponse = client.SetOrderReferenceDetails(setRequestParameters);
-            if (!setResponse.GetSuccess())
+            try
             {
-                apiResponse["setOrderReferenceDetailsResponse"] = "SetOrderReferenceDetails API call Failed" + Environment.NewLine + setResponse.GetJson();
+                SetOrderReferenceDetailsRequest setRequestParameters = new SetOrderReferenceDetailsRequest();
+                setRequestParameters.WithAmazonOrderReferenceId(amazonOrderReferenceId)
+                    .WithAmount(decimal.Parse(amount))
+                    .WithCurrencyCode(Regions.currencyCode.USD)
+                    .WithSellerNote("Note");
+
+                OrderReferenceDetailsResponse setResponse = client.SetOrderReferenceDetails(setRequestParameters);
+                if (!setResponse.GetSuccess())
+                {
+                    //apiResponse["setOrderReferenceDetailsResponse"] = "SetOrderReferenceDetails API call Failed" + Environment.NewLine + setResponse.GetJson();
+                    apiResponse["setOrderReferenceDetailsResponse"] = "0";
+                }
+                else
+                {
+                    apiResponse["setOrderReferenceDetailsResponse"] = setResponse.GetJson();
+                };
+                System.Web.HttpContext.Current.Session.Add("amazonOrderReferenceId", amazonOrderReferenceId);
+                System.Web.HttpContext.Current.Session.Add("amount", amount);
+                return Json(apiResponse);
             }
-            else
+            catch(Exception ex)
             {
-                apiResponse["setOrderReferenceDetailsResponse"] = setResponse.GetJson();
-            };
-            System.Web.HttpContext.Current.Session.Add("amazonOrderReferenceId", amazonOrderReferenceId);
-            System.Web.HttpContext.Current.Session.Add("amount", amount);
+                return Json(apiResponse);
+            }
 
-            return Json(apiResponse);
+            
         }
-        public static void SetOrderReference(string amazonOrderReferenceId, string amount)
-        {
-            SetOrderReferenceDetailsRequest setRequestParameters = new SetOrderReferenceDetailsRequest();
-            setRequestParameters.WithAmazonOrderReferenceId(amazonOrderReferenceId)
-                .WithAmount(decimal.Parse(amount))
-                .WithCurrencyCode(Regions.currencyCode.USD)
-                .WithSellerNote("Note");
-
-            OrderReferenceDetailsResponse setResponse = client.SetOrderReferenceDetails(setRequestParameters);
-
-            if (!setResponse.GetSuccess())
-            {
-                apiResponse["setOrderReferenceDetailsResponse"] = "SetOrderReferenceDetails API call Failed" + Environment.NewLine + setResponse.GetJson();
-            }
-            else
-            {
-                apiResponse["setOrderReferenceDetailsResponse"] = setResponse.GetJson();
-            }
-        }
-        
+       
         [HttpPost]
         public ActionResult ConfirmOrder()
         {
@@ -99,13 +88,16 @@ namespace BancHubAmzon.Controllers
 
             if (!confirmOrderReferenceResponse.GetSuccess())
             {
-                apiResponse["confirmOrderReferenceResponse"] = "SetOrderReferenceDetails API call Failed" + Environment.NewLine + confirmOrderReferenceResponse.GetJson();
+                //apiResponse["confirmOrderReferenceResponse"] = "SetOrderReferenceDetails API call Failed" + Environment.NewLine + confirmOrderReferenceResponse.GetJson();
+                apiResponse["confirmOrderReferenceResponse"] = "0";
+                return Json(apiResponse);
             }
             else
             {
                 apiResponse["confirmOrderReferenceResponse"] = confirmOrderReferenceResponse.GetJson();
+                return Json(apiResponse);
             }
-            return Json(apiResponse);
+            
         }
        
 

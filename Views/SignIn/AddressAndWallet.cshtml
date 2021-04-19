@@ -61,6 +61,14 @@
         margin: 0 auto;
         margin-bottom:20px !important;
     }
+    #error
+    {
+        color:firebrick;
+    }
+    #PaymentResponse
+    {
+        height:85%!important;
+    }
 </style>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -121,52 +129,68 @@
                                     $("#walletWidgetDiv").empty();
                                     $("#Placeorder").addClass("hidden");
                                     $("#GetOrder").addClass("hidden");
-                                   
-                                    var form = $('<div id="ConfirmOrder">'+
-                                        '<div class= "card">'+
-                                        '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive" id="Paymentborder">' +
+                                    if (data.confirmOrderReferenceResponse != "0") {
+                                        var form = $('<div id="ConfirmOrder">' +
+                                            '<div class= "card">' +
+                                            '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive" id="Paymentborder">' +
 
-                                        '<div class="invoice p-5">'+
-                                        '<h5 id="confirmHeader">Your order Confirmed</h5> <span class="font-weight-bold d-block mt-4">Hello, vishnu</span> <span>You order has been confirmed.</span>'+
-                                        '</div>'+
-                                        '<div class="product border-bottom table-responsive">' +
-                                        '<table class= "table table-borderless">' +
-                                        '<thead>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Order Date</span></th>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Order No</span>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Payment</span></th>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Shiping Address</span>' +
-                                        '</thead>'+
-                                        '<tbody>' +
-                                        '<tr>' +
-                                        '<td> <span>' + date + '</span> </div></td>' +
-                                        '<td> <span>' + oro + '</span> </div></td>' +
-                                        '<td> <span>' + 10 + '</span> </div></td>' +
-                                        '<td><span>' + shippingAddress.StateOrRegion + ' ' + shippingAddress.City + ' ' + shippingAddress.CountryCode + ' ' + shippingAddress.PostalCode + '</span> </div></td>' +
-                                        '</tr>' +
-                                        '</tbody>' +
-                                        '</table>' +
-                                        '</div>' +
-                                        '</div>'+
-                                        '</div>'+
+                                            '<div class="invoice p-5">' +
+                                            '<h5 id="confirmHeader">Your order Confirmed</h5> <span class="font-weight-bold d-block mt-4">Hello, vishnu</span> <span>You order has been confirmed.</span>' +
+                                            '</div>' +
+                                            '<div class="product border-bottom table-responsive">' +
+                                            '<table class= "table table-borderless">' +
+                                            '<thead>' +
+                                            '<th><div class="py-2"> <span class="d-block text-muted">Order Date</span></th>' +
+                                            '<th><div class="py-2"> <span class="d-block text-muted">Order No</span>' +
+                                            '<th><div class="py-2"> <span class="d-block text-muted">Payment</span></th>' +
+                                            '<th><div class="py-2"> <span class="d-block text-muted">Shiping Address</span>' +
+                                            '</thead>' +
+                                            '<tbody>' +
+                                            '<tr>' +
+                                            '<td> <span>' + date + '</span> </div></td>' +
+                                            '<td> <span>' + oro + '</span> </div></td>' +
+                                            '<td> <span>' + 10 + '</span> </div></td>' +
+                                            '<td><span>' + shippingAddress.StateOrRegion + ' ' + shippingAddress.City + ' ' + shippingAddress.CountryCode + ' ' + shippingAddress.PostalCode + '</span> </div></td>' +
+                                            '</tr>' +
+                                            '</tbody>' +
+                                            '</table>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
 
-                                    '</div>'+
+                                            '</div>' +
 
-                                '</div>');
+                                            '</div>');
 
-                                    $('#ConfirmOrder').append(form);
+                                        $('#ConfirmOrder').append(form);
 
-                                    //form.submit();
+                                        $("#AddressAndWallet").removeAttr("hidden");                        
+                                    }
+                                    else {
+                                        var form = $('<div id="ConfirmOrder">' +
+                                            '<div class= "card">' +
+                                            '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive" id="Paymentborder">' +
 
-                                    $("#AddressAndWallet").removeAttr("hidden");
+                                            '<div class="invoice p-5">' +
+                                            '<h5 id="confirmHeader">Your order cancelled</h5> ' +
+                                            '</div>' +
+                                            '<div class="product border-bottom table-responsive">' +
+                                            '<label id="error">sorry ! your order rejected</label>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
 
-                                    ////$('#setpaymentdetails').submit();
-                                    //$('#setpaymentdetails').removeAttr("hidden")
-                                    //form.submit();
+                                            '</div>' +
+
+                                            '</div>');
+
+                                        $('#ConfirmOrder').append(form);
+                                        $("#AddressAndWallet").removeAttr("hidden");
+                                    }
 
                                 },
                                 error: function (data) {
-                                    debugger;
+                                  
                                     $("#AddressAndWallet").attr("hidden");
                                     $("#addressBookWidgetDiv").empty();
                                     $("#walletWidgetDiv").empty();
@@ -177,25 +201,10 @@
                                         '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive" id="Paymentborder">' +
 
                                         '<div class="invoice p-5">' +
-                                        '<h5 id="confirmHeader">Your order cancelled</h5> <span class="font-weight-bold d-block mt-4">Hello, vishnu</span> <span>You order has been confirmed.</span>' +
+                                        '<h5 id="confirmHeader">Your order cancelled</h5>' +
                                         '</div>' +
                                         '<div class="product border-bottom table-responsive">' +
-                                        '<table class= "table table-borderless">' +
-                                        '<thead>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Order Date</span></th>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Order No</span>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Payment</span></th>' +
-                                        '<th><div class="py-2"> <span class="d-block text-muted">Shiping Address</span>' +
-                                        '</thead>' +
-                                        '<tbody>' +
-                                        '<tr>' +
-                                        '<td> <span>' + date + '</span> </div></td>' +
-                                        '<td> <span>' + oro + '</span> </div></td>' +
-                                        '<td> <span>' + 10 + '</span> </div></td>' +
-                                        '<td><span>' + shippingAddress.StateOrRegion + ' ' + shippingAddress.City + ' ' + shippingAddress.CountryCode + ' ' + shippingAddress.PostalCode + '</span> </div></td>' +
-                                        '</tr>' +
-                                        '</tbody>' +
-                                        '</table>' +
+                                        '<label id="error">sorry ! your order rejected</label>' +
                                         '</div>' +
                                         '</div>' +
                                         '</div>' +
@@ -244,48 +253,79 @@
                                     dataType: "json",
                                     cache: false,
                                     success: function (data) {
-                                       
-                                        
-                                        var result = JSON.stringify(data);
+                                      
+                                        if (data.setOrderReferenceDetailsResponse != "0") {
+                                            var result = JSON.stringify(data);
 
-                                        $.each(JSON.parse(result), function (key, value) {
-                                        
-                                            $.each(JSON.parse(value), function (key, value) {
-                                               
-                                                 shippingAddress = value.SetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination;
+                                            $.each(JSON.parse(result), function (key, value) {
 
+                                                $.each(JSON.parse(value), function (key, value) {
+
+                                                    shippingAddress = value.SetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination;
+
+
+                                                })
 
                                             })
+                                            $("#GetOrder").empty();
 
-                                        })
-                                        $("#GetOrder").empty();
+                                            if (shippingAddress != null) {
 
-                                        if (shippingAddress != null) {
+                                                var form = $('<div id="GetOrder">' +
+                                                    '<div class= "card">' +
+                                                    '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive">' +
+
+                                                    '<div class="invoice p-5">' +
+                                                    '<h5 id="orderHeader">Your order </h5> <span class="font-weight-bold d-block mt-4">Hello, vishnu</span> <span>You order has been Recevied.</span>' +
+                                                    '</div>' +
+                                                    '<div class="product border-bottom table-responsive">' +
+                                                    '<table class= "table table-borderless">' +
+                                                    '<thead>' +
+                                                    '<th><div class="py-2"> <span class="d-block text-muted">Order Date</span></th>' +
+                                                    '<th><div class="py-2"> <span class="d-block text-muted">Order No</span>' +
+                                                    '<th><div class="py-2"> <span class="d-block text-muted">Payment</span></th>' +
+                                                    '<th><div class="py-2"> <span class="d-block text-muted">Shiping Address</span>' +
+                                                    '</thead>' +
+                                                    '<tbody>' +
+                                                    '<tr>' +
+                                                    '<td> <span>' + date + '</span> </div></td>' +
+                                                    '<td> <span>' + oro + '</span> </div></td>' +
+                                                    '<td> <span>' + 10 + '</span> </div></td>' +
+                                                    '<td><span>' + shippingAddress.StateOrRegion + ' ' + shippingAddress.City + ' ' + shippingAddress.CountryCode + ' ' + shippingAddress.PostalCode + '</span> </div></td>' +
+                                                    '</tr>' +
+                                                    '</tbody>' +
+                                                    '</table>' +
+                                                    '</div>' +
+                                                    '</div>' +
+                                                    '</div>' +
+
+                                                    '</div>' +
+
+                                                    '</div>')
+                                                $('#GetOrder').append(form);
+                                            }
+                                            else {
+
+                                            }
+
+
+                                        }
+                                        else {
+                                            $("#AddressAndWallet").attr("hidden");
+                                            $("#addressBookWidgetDiv").empty();
+                                            $("#walletWidgetDiv").empty();
+                                            $("#Placeorder").addClass("hidden");
+                                            $("#GetOrder").empty();
 
                                             var form = $('<div id="GetOrder">' +
                                                 '<div class= "card">' +
-                                                '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive">' +
+                                                '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive" id="PaymentResponse">' +
 
                                                 '<div class="invoice p-5">' +
-                                                '<h5 id="orderHeader">Your order </h5> <span class="font-weight-bold d-block mt-4">Hello, vishnu</span> <span>You order has been Recevied.</span>' +
+                                                '<h5 id="orderHeader">Your order cancelled</h5> ' +
                                                 '</div>' +
                                                 '<div class="product border-bottom table-responsive">' +
-                                                '<table class= "table table-borderless">' +
-                                                '<thead>' +
-                                                '<th><div class="py-2"> <span class="d-block text-muted">Order Date</span></th>' +
-                                                '<th><div class="py-2"> <span class="d-block text-muted">Order No</span>' +
-                                                '<th><div class="py-2"> <span class="d-block text-muted">Payment</span></th>' +
-                                                '<th><div class="py-2"> <span class="d-block text-muted">Shiping Address</span>' +
-                                                '</thead>' +
-                                                '<tbody>' +
-                                                '<tr>' +
-                                                '<td> <span>' + date + '</span> </div></td>' +
-                                                '<td> <span>' + oro + '</span> </div></td>' +
-                                                '<td> <span>' + 10 + '</span> </div></td>' +
-                                                '<td><span>' + shippingAddress.StateOrRegion + ' ' + shippingAddress.City + ' ' + shippingAddress.CountryCode + ' ' + shippingAddress.PostalCode + '</span> </div></td>' +
-                                                '</tr>' +
-                                                '</tbody>' +
-                                                '</table>' +
+                                                '<label id="error">sorry ! your order rejected</label>'+
                                                 '</div>' +
                                                 '</div>' +
                                                 '</div>' +
@@ -295,10 +335,6 @@
                                                 '</div>')
                                             $('#GetOrder').append(form);
                                         }
-                                        else {
-
-                                        }
-                                      
                                     }
                                 });
                             },
@@ -306,31 +342,20 @@
                                 designMode: 'responsive'
                             },
                             onError: function (error) {
-
+                                $("#AddressAndWallet").attr("hidden");
+                                $("#addressBookWidgetDiv").empty();
+                                $("#walletWidgetDiv").empty();
+                                $("#Placeorder").addClass("hidden");
+                                $("#GetOrder").empty();
                                 var form = $('<div id="GetOrder">' +
                                     '<div class= "card">' +
-                                    '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive">' +
+                                    '<div class="payment border-top mt-3 mb-3 border-bottom table-responsive" id="PaymentResponse">' +
 
                                     '<div class="invoice p-5">' +
-                                    '<h5 id="orderHeader">Your order </h5> <span class="font-weight-bold d-block mt-4">Hello, vishnu</span> <span>You order has been Recevied.</span>' +
+                                    '<h5 id="orderHeader">Your order cancelled </h5> ' +
                                     '</div>' +
                                     '<div class="product border-bottom table-responsive">' +
-                                    '<table class= "table table-borderless">' +
-                                    '<thead>' +
-                                    '<th><div class="py-2"> <span class="d-block text-muted">Order Date</span></th>' +
-                                    '<th><div class="py-2"> <span class="d-block text-muted">Order No</span>' +
-                                    '<th><div class="py-2"> <span class="d-block text-muted">Payment</span></th>' +
-                                    '<th><div class="py-2"> <span class="d-block text-muted">Shiping Address</span>' +
-                                    '</thead>' +
-                                    '<tbody>' +
-                                    '<tr>' +
-                                    '<td> <span>' + date + '</span> </div></td>' +
-                                    '<td> <span>' + oro + '</span> </div></td>' +
-                                    '<td> <span>' + 10 + '</span> </div></td>' +
-                                    '<td><span>' + shippingAddress.StateOrRegion + ' ' + shippingAddress.City + ' ' + shippingAddress.CountryCode + ' ' + shippingAddress.PostalCode + '</span> </div></td>' +
-                                    '</tr>' +
-                                    '</tbody>' +
-                                    '</table>' +
+                                    '<label id="error">sorry ! your order rejected</label>' +
                                     '</div>' +
                                     '</div>' +
                                     '</div>' +
